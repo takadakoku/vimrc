@@ -52,13 +52,18 @@ endif
 call plug#begin()
   Plug 'preservim/nerdtree'
   Plug 'tpope/vim-commentary'
-  Plug 'Shougo/deoplete.nvim'
-  Plug 'phpactor/phpactor', {'for': 'php', 'tag': '*', 'do': 'composer install --no-dev -o'}
   " after run the command below
   " $ curl -LO https://github.com/BurntSushi/ripgrep/releases/download/14.1.0/ripgrep_14.1.0-1_amd64.deb
   " $ sudo dpkg -i ripgrep_14.1.0-1_amd64.deb
   Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
   Plug 'junegunn/fzf.vim'
+  Plug 'posva/vim-vue'
+  Plug 'diepm/vim-rest-console'
+  Plug 'mattn/vim-chatgpt'
+  " Hit <C-j> for requesting
+Plug 'phpactor/phpactor', {'for': 'php', 'tag': '*', 'do': 'composer install --no-dev -o'}
+
+" Require ncm2 and this plugin
 call plug#end()
 nnoremap O :<C-u>call append(expand('.'), '')<Cr>j
 set noswapfile
@@ -90,17 +95,26 @@ syntax enable
 autocmd BufRead,BufNewFile *.blade set syntax=html
 autocmd Filetype blade.php setlocalautocmd Filetype html
 :set completeopt=menuone
-"for k in split("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_",'\zs')
-"  exec "imap <expr> " . k . " pumvisible() ? '" . k . "' : '" . k . "\<C-p>\<C-n>'"
-"endfor
+for k in split("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_",'\zs')
+    exec "imap <expr> " . k . " pumvisible() ? '" . k . "' : '" . k . "\<C-p>\<C-n>'"
+endfor
 nmap <Tab>      gt
 nmap <S-Tab>    gT
-
-set shiftwidth=2
-set tabstop=2
-set clipboard=unnamedplus
-nnoremap <silent><C-n> :NERDTreeToggle<CR>
+set nowrap
+colorscheme meta5
+set expandtab
+set shiftwidth=4
+set tabstop=4
+nnoremap <silent><C-n> :NERDTreeToggle ./<CR>
+nnoremap <silent><C-m> :NERDTreeToggle %<CR>
 nnoremap <silent><C-p> :Files<CR>
 nnoremap <silent><C-f> :Lines<CR>
 nnoremap <silent><C-l> :Rg<CR>
-call deoplete#custom#option('sources', {'php' : ['omni', 'phpactor', 'ultisnips', 'buffer']})
+autocmd FileType php source <sfile>:h/php.vim
+autocmd FileType vue source <sfile>:h/vue.vim
+
+set autoindent
+set list
+set listchars=tab:»-,trail:-,eol:↲,extends:»,precedes:«,nbsp:%
+set clipboard=unnamedplus
+map <F12> <S-...><Insert>
