@@ -60,6 +60,13 @@ call plug#begin()
   Plug 'posva/vim-vue'
   Plug 'diepm/vim-rest-console'
   Plug 'mattn/vim-chatgpt'
+  Plug 'prabirshrestha/vim-lsp'
+  Plug 'mattn/vim-lsp-settings'
+  Plug 'prabirshrestha/asyncomplete.vim'
+  Plug 'prabirshrestha/asyncomplete-lsp.vim'
+  Plug 'preservim/nerdcommenter'
+  Plug 'brglng/vim-im-select'
+  Plug 'tyru/eskk.vim'
   " Hit <C-j> for requesting
 Plug 'phpactor/phpactor', {'for': 'php', 'tag': '*', 'do': 'composer install --no-dev -o'}
 
@@ -95,26 +102,36 @@ syntax enable
 autocmd BufRead,BufNewFile *.blade set syntax=html
 autocmd Filetype blade.php setlocalautocmd Filetype html
 :set completeopt=menuone
-for k in split("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_",'\zs')
-    exec "imap <expr> " . k . " pumvisible() ? '" . k . "' : '" . k . "\<C-p>\<C-n>'"
-endfor
 nmap <Tab>      gt
 nmap <S-Tab>    gT
 set nowrap
-colorscheme meta5
+"colorscheme wildcharm
+colorscheme wildcharm
 set expandtab
 set shiftwidth=4
 set tabstop=4
+
+:set expandtab
+:retab 4
+set listchars=tab:>-,space:-
 nnoremap <silent><C-n> :NERDTreeToggle ./<CR>
 nnoremap <silent><C-m> :NERDTreeToggle %<CR>
 nnoremap <silent><C-p> :Files<CR>
 nnoremap <silent><C-f> :Lines<CR>
 nnoremap <silent><C-l> :Rg<CR>
-autocmd FileType php source <sfile>:h/php.vim
-autocmd FileType vue source <sfile>:h/vue.vim
-
+"autocmd FileType php source <sfile>:h/php.vim
+"autocmd FileType vue source <sfile>:h/vue.vim
+"autocmd FileType php,ctp :set dictionary=~/.vim/dict/php.dict
+let g:lsp_settings_filetype_vue = ['volar-server', 'typescript-language-server']
 set autoindent
 set list
 set listchars=tab:»-,trail:-,eol:↲,extends:»,precedes:«,nbsp:%
 set clipboard=unnamedplus
 map <F12> <S-...><Insert>
+let g:lsp_diagnostics_enabled = 0
+vmap <C-_> gc
+let g:lsp_settings = { 'css-languageserver': { 'cmd': ['vscode-css-language-server', '--stdio'] } }
+imap <C-_> <Esc><Plug>NERDCommenterToggle
+nmap <C-_> <Plug>NERDCommenterToggle
+nnoremap x "_x
+nnoremap X "_X
